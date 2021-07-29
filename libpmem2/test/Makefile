@@ -15,6 +15,13 @@ basic_run:
 	./${DIR_BIN}/basic ${TEST_FILE}
 	cat ${TEST_FILE}
 
+api: test_api.o
+	${CC} -o ${DIR_BIN}/$@ $^ $(CFLAGS)
+
+api_run:
+	./${DIR_BIN}/api 
+	cat ${TEST_FILE}
+
 ${DIR_BIN}:
 	mkdir $@
 
