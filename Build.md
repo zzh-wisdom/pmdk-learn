@@ -1,8 +1,8 @@
 # Build 安装
 
-## Windows
-
 参考git仓库上的说明：<https://github.com/pmem/pmdk>
+
+## Windows
 
 ### 依赖安装
 
@@ -42,5 +42,28 @@
 
 然而具体在代码中怎么用，不太清楚，后续有空再搞。
 
-## Ubuntu
+## Linux
 
+### 依赖
+
+You will need to install the following required packages on the build system:
+
+- autoconf
+- pkg-config
+- libndctl-devel (v63 or later)1
+- libdaxctl-devel (v63 or later)
+- pandoc (for documentation, required during install)
+
+The following packages are required only by selected PMDK components or features:
+
+- libfabric (v1.4.2 or later) -- required by librpmem
+
+> PMDK depends on libndctl to support RAS features. It is possible to disable this support by passing NDCTL_ENABLE=n to "make", but we strongly discourage users from doing that. Disabling NDCTL strips PMDK from ability to detect hardware failures, which may lead to silent data corruption. For information how to disable RAS at runtime for kernels prior to 5.0.4 please see https://github.com/pmem/pmdk/issues/4207.
+
+原创博客：<https://blog.csdn.net/qq_39366020/article/details/106452246?spm=1001.2014.3001.5502>
+
+## MacOS
+
+暂不支持。
+
+原因：ndctl工具基于linux内核构建的
