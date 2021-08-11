@@ -1,5 +1,7 @@
 # libpmem2 man
 
+<https://pmem.io/pmdk/manpages/linux/master/libpmem2/libpmem2.7.html>
+
 ## 使用
 
 ```cpp

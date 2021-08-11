@@ -53,6 +53,8 @@ main(int argc, char *argv[])
 		exit(1);
 	}
 
+	close(fd);  // 创建文件映射后，可以提前关闭描述符
+
 	char *addr = pmem2_map_get_address(map);
 	size_t size = pmem2_map_get_size(map);
 
@@ -64,7 +66,7 @@ main(int argc, char *argv[])
 	pmem2_map_delete(&map);
 	pmem2_source_delete(&src);
 	pmem2_config_delete(&cfg);
-	close(fd);
+	// close(fd);
 
 	return 0;
 }

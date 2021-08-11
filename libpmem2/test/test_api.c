@@ -14,7 +14,7 @@
 #endif
 #include <libpmem2.h>
 
-const char* PMEM_FILE_NAME = "/mnt/pmem/zzh/test.txt";
+const char* PMEM_FILE_NAME = "./tmp/test.txt";
 
 int
 main(int argc, char *argv[])
@@ -67,7 +67,7 @@ main(int argc, char *argv[])
     // 超过文件的大小, mapping larger than file size
     // pmem2_config_set_length(cfg, 8192);
     // 小于文件大小，是4kb的倍数，运行通过
-    pmem2_config_set_length(cfg, 4096);
+    /// pmem2_config_set_length(cfg, 4096);
 
     // 结论：
     // 1. 映射长度不能超过文件大小
@@ -82,7 +82,7 @@ main(int argc, char *argv[])
 
     // 若处理器不支持eADR，则使用PMEM2_GRANULARITY_BYTE会报错
 	if (pmem2_config_set_required_store_granularity(cfg,
-			PMEM2_GRANULARITY_CACHE_LINE)) {
+			PMEM2_GRANULARITY_PAGE)) {
 		pmem2_perror("pmem2_config_set_required_store_granularity");
 		exit(1);
 	}
@@ -97,11 +97,24 @@ main(int argc, char *argv[])
     printf("map size: %lu\n", size);
 
     // 发生段错误，超出映射长度
-	strcpy(addr+4096, "hello, persistent memory");
+	// strcpy(addr+4096, "hello, persistent memory");
+	// persist = pmem2_get_persist_fn(map);
+	// persist(addr+4096, size);
 
-    printf("map size: %lu\n", size);
-	persist = pmem2_get_persist_fn(map);
-	persist(addr+4096, size);
+	printf("addr1: %p, size1: %lu\n", addr, size);
+	struct pmem2_map *map2;
+	if(pmem2_map_from_existing(&map2, src, 0, size, PMEM2_GRANULARITY_PAGE)) {
+		pmem2_perror("pmem2_map_from_existing");
+		exit(1);
+	}
+
+	char *addr2 = pmem2_map_get_address(map2);
+	size_t size2 = pmem2_map_get_size(map2);
+    printf("addr1: %p, size1: %lu, addr2: %p, size2: %lu\n", addr, size, addr2, size2);
+	
+	strcpy(addr2, "hello2, persistent2 memory2s");
+	persist = pmem2_get_persist_fn(map2);
+	persist(addr2, size2);
 
 	pmem2_map_delete(&map);
 	pmem2_source_delete(&src);
