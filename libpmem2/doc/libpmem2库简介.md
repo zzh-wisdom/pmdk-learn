@@ -128,7 +128,7 @@ libpmem2 函数 pmem2_get_persist_fn 自动决定将数据刷新到底层存储�
 	close(fd);
 ```
 
-为了避免我们示例中的内存泄漏，最后要做的是取消映射、释放源和配置结构并关闭文件描述符。
+为了避免我们示例中的内存泄漏，最后要做的是取消映射、释放源和配置结构并关闭文件描述符。（文件描述符在创建好映射后就可以关闭了吧）
 
 PMDK 存储库中提供了上述 [libpmem2 basic.c](https://github.com/pmem/pmdk/tree/master/src/examples/libpmem2) 示例的可构建源代码。
 
