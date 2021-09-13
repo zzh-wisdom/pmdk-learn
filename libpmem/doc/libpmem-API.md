@@ -33,7 +33,7 @@ flags 参数是 0 或以下一个或多个文件创建标志的按位或：
 其余标志在指定 PMEM_FILE_CREATE 时修改 pmem_map_file() 的行为。
 
 - PMEM_FILE_EXCL - 如果与 PMEM_FILE_CREATE 一起指定，**并且路径已经存在**，那么 pmem_map_file() 将失败并显示 EEXIST。否则，与 open(2) 上的 O_EXCL 具有相同的含义，通常未定义。
-- PMEM_FILE_SPARSE - 当与 PMEM_FILE_CREATE 一起指定时，使用 ftruncate(2) 创建一个稀疏 (holey) 文件，而不是使用 posix_fallocate(3) 分配它。否则忽略。
+- PMEM_FILE_SPARSE - 当与 PMEM_FILE_CREATE 一起指定时，则只使用 ftruncate(2) 创建一个稀疏 (holey) 文件，之后不使用 posix_fallocate(3) 分配它。否则忽略。这两个函数的具体含义参考：<https://qa.1r1g.com/sf/ask/3455265271/>
 - PMEM_FILE_TMPFILE - **为未命名的临时文件创建映射**。必须用 PMEM_FILE_CREATE 指定。 len 必须非零，**模式被忽略（临时文件总是使用模式 0600 创建）**，并且路径必须指定一个现有的目录名称。如果底层文件系统支持O_TMPFILE，则在包含目录路径的文件系统中创建未命名的临时文件；如果还指定了 PMEM_FILE_EXCL，则临时文件可能不会随后链接到文件系统（请参阅 open(2)），否则，文件将在路径中创建并立即取消链接。
 
 **该路径可以指向设备 DAX。在这种情况下，只有 PMEM_FILE_CREATE 和 PMEM_FILE_SPARSE 标志有效，但它们都被忽略**。对于设备 DAX 映射，**len 必须等于 0 或设备的确切大小**。
