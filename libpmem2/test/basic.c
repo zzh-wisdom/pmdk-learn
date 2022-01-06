@@ -43,7 +43,7 @@ main(int argc, char *argv[])
 	}
 
 	if (pmem2_config_set_required_store_granularity(cfg,
-			PMEM2_GRANULARITY_PAGE)) {
+			PMEM2_GRANULARITY_CACHE_LINE)) {
 		pmem2_perror("pmem2_config_set_required_store_granularity");
 		exit(1);
 	}
