@@ -64,7 +64,7 @@ pmem2_config_delete() 函数释放 pmem2_config_new() 返回的 *cfg 并将 *cfg
 
 ### 1.2. Config中的参数设置
 
-#### 1.2.1. length 
+#### 1.2.1. length
 
 ```cpp
 int pmem2_config_set_length(struct pmem2_config *config, size_t length);
@@ -590,13 +590,13 @@ pmem2_memmove_fn memmove_fn = pmem2_get_memmove_fn(map);
   ```cpp
   pmem2_memcpy_fn memcpy_fn = pmem2_get_memcpy_fn(map);
   pmem2_drain_fn drain_fn = pmem2_get_drain_fn  (map);
-  
+
   /* ... write several ranges to pmem ... */
   memcpy_fn(pmemdest1, src1, len1,   PMEM2_F_MEM_NODRAIN);
   memcpy_fn(pmemdest2, src2, len2,   PMEM2_F_MEM_NODRAIN);
-  
+
   /* ... */
-  
+
   /* wait for any pmem stores to drain from   HW buffers */
   drain_fn();
   ```
@@ -613,6 +613,13 @@ pmem2_memmove_fn memmove_fn = pmem2_get_memmove_fn(map);
 使用无效的标志组合具有未定义的行为。
 
 如果没有上述任何标志，libpmem2 将尝试根据数据大小猜测最佳策略。有关详细信息，请参阅 libpmem2(7) 中的 PMEM_MOVNT_THRESHOLD 描述。
+
+默认值是256：
+
+```cpp
+#define MOVNT_THRESHOLD	256
+size_t Movnt_threshold = MOVNT_THRESHOLD;
+```
 
 > 关于non-temporal： Load/Store Non-temporal Pair指令提供给memory system一个暗示（hint）：这个访问是non-temporal或者流式（streaming）的，在短时间内很可能不会再次访问，要访问的数据不需要缓存到cache中。这仅仅是一个暗示，这个指令允许preload或者和其他写合并在一起形成bulk transfers。（即短时间内不会再次访问）
 

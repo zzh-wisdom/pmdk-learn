@@ -54,8 +54,9 @@ libpmem2 API 还提供对坏块（badblock）和不安全关闭状态处理的�
 
 第三种粒度 PMEM2_GRANULARITY_BYTE 适用于断电保护域涵盖内存控制器和 CPU 缓存的平台。在这种情况下，不再需要缓存刷新指令，平台本身保证了数据的持久性。但是顺序的保证可能仍然需要障碍。
 
-该库在 pmem2_granularity 枚举中声明了这些粒度级别，应用程序必须在 pmem2_config 中将其设置为适当的级别才能成功映射。
-软件应将此配置参数设置为最准确地表示目标硬件特性和应用程序存储模式的值。例如，在驻留在 SSD 或 PMEM 上的大型逻辑页面上运行的数据库存储引擎应将此值设置为 PMEM2_GRANULARITY_PAGE。该库将创建新映射粒度低于或等于请求粒度的映射。例如，可以为所需的粒度 PMEM2_GRANULARITY_PAGE 创建具有PMEM2_GRANULARITY_CACHE_LINE 的映射，但反之则不然。
+该库在 pmem2_granularity 枚举中声明了这些粒度级别，应用程序必须在 pmem2_config 中将其设置为适当的级别才能成功映射。软件应将此配置参数设置为最准确地表示目标硬件特性和应用程序存储模式的值。例如，在驻留在 SSD 或 PMEM 上的大型逻辑页面上运行的数据库存储引擎应将此值设置为 PMEM2_GRANULARITY_PAGE。该库将创建新映射粒度低于或等于请求粒度的映射。例如，可以为所需的粒度 PMEM2_GRANULARITY_PAGE 创建具有PMEM2_GRANULARITY_CACHE_LINE 的映射，但反之则不然。
+
+更多可以看[源码解析](./一些源码阅读.md)
 
 ## 警告
 
